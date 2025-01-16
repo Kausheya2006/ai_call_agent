@@ -11,7 +11,7 @@ This project is an AI-powered call agent built using **Node.js**, **Twilio**, an
 - **Twilio Integration**: Manages phone call and SMS functionalities.
 - **AI-Powered Responses**: Uses Google Generative AI (Gemini) to generate natural and relevant conversational responses.
 - **Web Dashboard**: Includes static web pages for system interaction.
-- **Car Sales Assistant**: There is also a Car-guide Web app (created with html (for frontend) and python (for backend)) which allows customers to communicate with AI to guide us in purchasing cars through voice.
+- **Car Sales Assistant**: There is also a Car-guide Web app (created with html (for frontend) and python (for backend)) which allows customers to communicate with AI to guide in purchasing cars through voice.
 ---
 
 ## Installation
