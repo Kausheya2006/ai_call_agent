@@ -71,5 +71,5 @@ This project is an AI-powered call agent built using **Node.js**, **Twilio**, an
 
 
 ## Demo
-[Watch the demo for Car-Sales-Assisstant on YouTube](https://youtu.be/i9_xem5R6eA)
+[Watch the demo for Car-Sales-Assistant on YouTube](https://youtu.be/i9_xem5R6eA)
 
