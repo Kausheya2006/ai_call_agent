@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Solver</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome (for icons) -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <style>
+      /* Basic reset */
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+        font-family: "Arial", sans-serif;
+      }
+
+      /* Sidebar styling */
+      #sidebar {
+        width: 250px;
+        position: fixed;
+        top: 0;
+        left: -250px;
+        height: 100%;
+        background-color: #333;
+        color: #fff;
+        transition: left 0.3s ease;
+        padding-top: 60px;
+        border-right: 2px solid #333;
+      }
+
+      #sidebar ul {
+        list-style-type: none;
+        padding: 0;
+        margin-top: 20%;
+      }
+
+      #sidebar ul li a {
+        color: #fff;
+        padding: 20px;
+        text-decoration: none;
+        display: block;
+        font-size: 18px;
+        font-weight: 500;
+        border-bottom: 1px solid #3a78c1;
+        transition: background-color 0.2s ease;
+      }
+
+      #sidebar ul li a:hover {
+        background-color: #3a78c1;
+      }
+
+      /* Menu toggle button */
+      #menu-toggle {
+        font-size: 30px;
+        cursor: pointer;
+        background-color: #4a90e2;
+        border: none;
+        padding: 10px;
+        border-radius: 20%;
+        color: white;
+        position: fixed;
+        top: 30px;
+        left: 30px;
+        z-index: 1000; /* Ensure it's always on top */
+      }
+
+      /* Main content styling */
+      .content {
+        margin-left: 0;
+        transition: margin-left 0.3s ease;
+        padding: 30px;
+        background-color: #f8f9fa;
+        min-height: 100vh;
+      }
+
+      /* Active state when sidebar is visible */
+      #sidebar.active {
+        left: 0;
+      }
+
+      .content.active {
+        margin-left: 250px;
+      }
+
+      /* Navbar */
+      .navbar {
+        background-color: #fff;
+        padding: 15px 30px;
+        display: flex;
+        justify-content: center; /* Centers the content horizontally */
+        align-items: center; /* Vertically centers the content */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .navbar .title {
+        font-size: 24px;
+        font-weight: bold;
+        text-align: center;
+        flex: 1;
+      }
+
+      /* Header */
+      header {
+        background: linear-gradient(45deg, #6a11cb, #2575fc);
+        color: white;
+        padding: 30px 20px;
+        text-align: center;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      header h1 {
+        font-size: 3em;
+        margin-bottom: 10px;
+      }
+
+      header p {
+        font-size: 1.5em;
+      }
+
+      /* Theme Toggle Button */
+      #theme-toggle {
+        background-color: #f0f0f0;
+        border: none;
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 20px;
+        transition: background-color 0.3s ease;
+      }
+
+      #theme-toggle:hover {
+        background-color: #e0e0e0;
+      }
+
+      /* Styling for the user input area */
+      .input-area {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
+      }
+
+      textarea {
+        width: 100%;
+        height: 120px;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 16px;
+        transition: border 0.3s ease;
+      }
+
+      textarea:focus {
+        border-color: #4a90e2;
+      }
+
+      .send-chat-btn {
+        position: absolute;
+        bottom: 24%;
+        right: 10px;
+        background-color: #4a90e2;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 50%;
+        font-size: 18px;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+      }
+
+      .send-chat-btn:hover {
+        background-color: #357abd;
+      }
+
+      /* Ensure the button is visible above the textarea */
+      textarea {
+        padding-bottom: 50px;
+      }
+
+      /* Mobile responsive styles */
+      @media (max-width: 768px) {
+        #sidebar {
+          width: 200px;
+        }
+        .content.active {
+          margin-left: 200px;
+        }
+        .send-chat-btn {
+          bottom: 25%;
+          font-size: 12px;
+        }
+        #sidebar {
+          width: 60%;
+        }
+      }
+
+      /* Dark Mode */
+      body.dark {
+        background-color: #121212;
+        color: #e0e0e0;
+      }
+
+      body.dark .navbar {
+        background-color: #1f1f1f;
+        color: #e0e0e0;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+      }
+
+      body.dark #sidebar {
+        background-color: #4c4b4b;
+        color: #e0e0e0;
+        border-right: 2px solid #4a90e2;
+      }
+
+      body.dark #sidebar ul li a {
+        color: #e0e0e0;
+      }
+
+      body.dark .send-chat-btn {
+        background-color: #4a90e2;
+        color: white;
+      }
+
+      body.dark .content {
+        background-color: #1d1d1d;
+      }
+    </style>
+  </head>
+  <body class="light">
+    <!-- Menu Toggle Button -->
+    <button id="menu-toggle">☰</button>
+
+    <!-- Sidebar -->
+    <aside id="sidebar">
+      <ul>
+        <li><a href="index.html">Call AI Agent</a></li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="content">
+      <!-- Navbar -->
+      <div class="navbar">
+        <div class="title">Solver</div>
+        <button id="theme-toggle">
+          <i id="theme-icon" class="fas fa-sun"></i>
+        </button>
+      </div>
+
+      <!-- Header -->
+      <header>
+        <h1>Solver</h1>
+        <p>Your ultimate AI-powered assistant dashboard</p>
+      </header>
+
+      <!-- User Input Section -->
+      
+
+    <!-- Bootstrap Bundle with Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Dark/Light Theme Toggle functionality
+      const themeToggle = document.getElementById("theme-toggle");
+      const themeIcon = document.getElementById("theme-icon");
+      const html = document.body;
+
+      themeToggle.addEventListener("click", () => {
+        if (html.classList.contains("light")) {
+          html.classList.replace("light", "dark");
+          themeIcon.classList.replace("fa-sun", "fa-moon");
+        } else {
+          html.classList.replace("dark", "light");
+          themeIcon.classList.replace("fa-moon", "fa-sun");
+        }
+      });
+
+      // Mobile Sidebar Toggle with Animation
+      const menuToggle = document.getElementById("menu-toggle");
+      const sidebar = document.getElementById("sidebar");
+      const content = document.querySelector(".content");
+
+      menuToggle.addEventListener("click", () => {
+        sidebar.classList.toggle("active");
+        content.classList.toggle("active");
+      });
+    </script>
+  </body>
+</html>
